@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_files %}
+   <link rel="stylesheet" href="{% static 'blogs/app.css' %}">
+{% endblock %}
+
+{% block page_title %}
+    My Blog Post Home Page
+{% endblock %}
+
+{% block body_content %}
+    {# 'content' is the common name for the main block in base.html #}
+
+    <header>
+        <section>
+            <h1>My Personal Blog</h1>
+            <h2>Write about Python</h2>
+            {# Add a real path to your image below #}
+            <img src="{% static 'blogs/images/author.jpg' %}" alt="Author" height="100" width="100"/>
+        </section>
+    </header>
+
+    <section id="featured-posts">
+        <h2>Featured Posts</h2>
+        <ul>
+        {% for blog in l_blogs %}
+            <li>
+                <a href="{% url 'blog_post' blog=blog.slug %}">{{blog.title}}</a>
+                    <img src="{% static 'blogs/images/'|add:blog.image %}"alt="Python" />
+
+                <div>
+                    <p>{{ blog.preview }}</p>
+                </div>
+            </li>
+        </ul>
+          {% endfor %}
+
+        <h2>About the Author</h2>
+        <ul>
+            <li>
+                <article>
+                    <p>Author have 10+ years of experience in web development.</p>
+                    <p>Contact Author @Example.com</p>
+                </article>
+            </li>
+        </ul>
+    </section>
+{% endblock %}

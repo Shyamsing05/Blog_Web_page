@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+   {% block css_files %}
+      <link rel="stylesheet" href="{% static 'blogs/app.css' %}">
+   {% endblock %}
+
+   {% block page_title %}
+         All Posts
+   {% endblock %}
+
+
+<body>
+        {% block body_content %}
+
+<section>
+    <h2>All Posts</h2>
+      <ul>
+        {% for blog in blogs %}
+            <li>
+
+                <a href="{% url 'blog_post' blog.slug %}">{{blog.title}}</a>
+                    <img src="{% static 'blogs/images/'|add:blog.image %}"alt="{{blog.title}}"/>
+                <div>
+                    <p>{{ blog.preview }}</p>
+                </div>
+            </li>
+          {% endfor %}
+      </ul>
+</section>
+        {% endblock %}
+</body>
+
