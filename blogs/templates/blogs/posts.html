@@ -45,14 +45,27 @@
        <main>
            <p>{{post.content}}</p>
        </main>
+
      <section>
          <h2>Comments</h2>
-         <form>
-             {{comment_form}}
+         <form action="{% url 'blog_post' post.slug %}" method = "POST">
+             {% csrf_token %}
+             {{ comment_form }}
              <button> Save </button>
          </form>
      </section>
+     <section>
+         <h2>Recent Comments :</h2>
+                 <ul>
+                  {% for comment in comments %}
 
+                    <li>   <h3>{{ comment.user_name }}</h3>
+                           <p>{{ comment.comment_text }}</p>
+                    </li>
+                 </ul>
+                  {% endfor %}
+
+         </section>
      {% endblock %}
 </body>
 </html>

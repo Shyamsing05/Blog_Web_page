@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponseNotFound, HttpResponse
+from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.conf import settings
 from datetime import date
 from .models import Post
 from .forms import CommentForm
-
+from django.urls import reverse
 
 
 
@@ -26,10 +26,25 @@ def blog_post(request, blog):
     try:
           post_data = Post.objects.get(slug=blog)
           tag_caption = post_data.tags.all()
-          form_data = CommentForm()
-          return render(request, "blogs/posts.html", {"post": post_data, "tags": tag_caption, "comment_form": form_data})
-    except Exception:
-            return HttpResponseNotFound("<h1>blog not found</h1>")
+          all_comments = post_data.comments.all().order_by("-id")
+
+          if request.method == "POST":
+              form = CommentForm(request.POST)
+              if form.is_valid():
+                  comment = form.save(commit=False)
+                  comment.post = post_data
+                  comment.save()
+                  return HttpResponseRedirect(reverse ("blog_post" , args=[blog]))
+          else:
+              form = CommentForm()
+              return render(request, "blogs/posts.html", {
+                  "post": post_data,
+                  "tags": tag_caption,
+                  "comment_form": form ,
+                  "comments": all_comments
+              })
+    except post_data.DoesNotExist:
+                  return HttpResponseNotFound("<h1>blog not found</h1>")
 
 
 

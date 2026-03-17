@@ -23,7 +23,7 @@
 
     <section id="featured-posts">
         <h2>Featured Posts</h2>
-        <ul>
+
         {% for blog in l_blogs %}
             <li>
                 <a href="{% url 'blog_post' blog=blog.slug %}">{{blog.title}}</a>
@@ -33,7 +33,7 @@
                     <p>{{ blog.preview }}</p>
                 </div>
             </li>
-        </ul>
+
           {% endfor %}
 
         <h2>About the Author</h2>
